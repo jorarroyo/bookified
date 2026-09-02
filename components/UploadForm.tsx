@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import {FieldErrors, useForm} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Upload, ImageIcon } from 'lucide-react';
 import { UploadSchema } from '@/lib/zod';
@@ -140,9 +140,11 @@ const UploadForm = () => {
         }
     };
 
-    const onError = (error: any) => {
-        toast.error(Object.keys(error).map((key) => error[key].message).join(", "));
-        form.reset();
+    const onError = (errors: FieldErrors<BookUploadFormValues>) => {
+        const messages = Object.values(errors)
+            .map((err) => err?.message)
+            .filter(Boolean);
+        toast.error(messages.join(", "));
     }
 
     if (!isMounted) return null;
