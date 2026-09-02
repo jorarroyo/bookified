@@ -140,14 +140,9 @@ const UploadForm = () => {
         }
     };
 
-import { useForm, type FieldErrors } from 'react-hook-form';
-
-    const onError = (errors: FieldErrors<BookUploadFormValues>) => {
-        const messages = Object.values(errors)
-            .map((err) => err?.message)
-            .filter(Boolean);
-        toast.error(messages.join(", "));
-    };
+    const onError = (error: any) => {
+        toast.error(Object.keys(error).map((key) => error[key].message).join(", "));
+        form.reset();
     }
 
     if (!isMounted) return null;
