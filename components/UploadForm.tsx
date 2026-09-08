@@ -112,7 +112,11 @@ const UploadForm = () => {
             });
 
             if (!book.success) {
-                throw new Error("Something went wrong. Please try again with a different file.");
+                toast.error(book.error as string || "Failed to create book");
+                if (book.isBillingError) {
+                    router.push("/subscriptions");
+                }
+                return;
             }
 
             if (book.alreadyExists) {
